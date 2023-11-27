@@ -42,8 +42,13 @@ def index_to_position(index: Index, strides: Strides) -> int:
     Returns:
         Position in storage
     """
-
-    raise NotImplementedError("Need to include this file from past assignment.")
+    pos = 0
+    for idx, stride in zip(index, strides):
+        pos += idx * stride
+    return pos
+    # return int(np.dot(index, strides))
+    # return np.dot(index.astype(np.int32), strides.astype(np.int32))
+    # return np.dot(index, strides)
 
 
 def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
@@ -59,7 +64,19 @@ def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
         out_index : return index corresponding to position.
 
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    cur_ord = ordinal + 0
+    for i in range(len(shape) - 1, -1, -1):
+        sh = shape[i]
+        out_index[i] = int(cur_ord % sh)
+        cur_ord = cur_ord // sh
+    # seq_shape: Sequence[int] = map(int, list(shape))
+    # strides = strides_from_shape(seq_shape)
+
+    # curr = ordinal
+    # for i in range(len(shape)):
+    #     index_i = np.floor(curr / strides[i])
+    #     curr -= index_i * strides[i]
+    #     out_index[i] = index_i
 
 
 def broadcast_index(
@@ -81,7 +98,20 @@ def broadcast_index(
     Returns:
         None
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    # since big_shape is a bradcasted version of shape, we know if there are any extra dimesnions they are to the left and do not affect our original index. For remaining indices, if the dim is the same, then the index gets copied, if the dim is bigger (meaning original must be 1) then the index is 0
+    for i, s in enumerate(shape):
+        if s > 1:
+            out_index[i] = big_index[i + (len(big_shape) - len(shape))]
+        else:
+            out_index[i] = 0
+    return
+    # dims = len(shape)
+    # big_shape, big_index = big_shape[-dims:], big_index[-dims:]
+    # for i in range(dims):
+    #     if big_shape[i] == shape[i]:
+    #         out_index[i] = big_index[i]
+    #     else:
+    #         out_index[i] = 0
 
 
 def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
@@ -98,7 +128,23 @@ def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
     Raises:
         IndexingError : if cannot broadcast
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    shape1, shape2 = list(shape1), list(shape2)
+    diff = len(shape1) - len(shape2)
+    # Add 1s to left
+    if diff < 0:    # shape1 smaller by -diff
+        shape1 = [1] * (-diff) + shape1
+    elif diff > 0:  # shape2 smaller by diff
+        shape2 = [1] * diff + shape2
+
+    # select correct value for each dimension
+    out = []
+    for dim_1, dim_2 in zip(shape1, shape2):
+        if dim_1 == dim_2 or dim_1 == 1 or dim_2 == 1:
+            out.append(max(dim_1, dim_2))
+        else:
+            raise IndexingError(f"cannot broadcast shapes (w/ padded 1s) shape1={shape1} and shape2={shape2} on dim_1={dim_1} and dim_2={dim_2}")
+
+    return tuple(out)
 
 
 def strides_from_shape(shape: UserShape) -> UserStrides:
@@ -172,11 +218,6 @@ class TensorData:
         if isinstance(index, tuple):
             aindex = array(index)
 
-        # Pretend 0-dim shape is 1-dim shape of singleton
-        shape = self.shape
-        if len(shape) == 0 and len(aindex) != 0:
-            shape = (1,)
-
         # Check for errors
         if aindex.shape[0] != len(self.shape):
             raise IndexingError(f"Index {aindex} must be size of {self.shape}.")
@@ -214,7 +255,7 @@ class TensorData:
         Permute the dimensions of the tensor.
 
         Args:
-            *order: a permutation of the dimensions
+            order (list): a permutation of the dimensions
 
         Returns:
             New `TensorData` with the same storage and a new dimension order.
@@ -223,7 +264,15 @@ class TensorData:
             range(len(self.shape))
         ), f"Must give a position to each dimension. Shape: {self.shape} Order: {order}"
 
-        raise NotImplementedError("Need to include this file from past assignment.")
+        new_shape = list(self.shape)
+        new_strides = list(self.strides)
+        for i, new_idx in enumerate(order):
+            new_shape[i] = self.shape[new_idx]
+            new_strides[i] = self.strides[new_idx]
+
+        ret_shape: Sequence[int] = tuple(new_shape)
+
+        return TensorData(self._storage, ret_shape, tuple(new_strides))
 
     def to_string(self) -> str:
         s = ""

@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from typing import Callable, Optional
 
     from .tensor import Tensor
-    from .tensor_data import Index, Shape, Storage, Strides
+    from .tensor_data import Shape, Storage, Strides
 
 # TIP: Use `NUMBA_DISABLE_JIT=1 pytest tests/ -m task3_1` to run these tests without JIT.
 
@@ -159,7 +159,21 @@ def tensor_map(
         in_shape: Shape,
         in_strides: Strides,
     ) -> None:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # Check if stride-alligned (same shape and strides, mean memory is same) and can run in parallel
+        if np.array_equal(out_strides, in_strides) and np.array_equal(out_shape, in_shape):
+            for out_ord in prange(len(out)):
+                out[out_ord] = fn(in_storage[out_ord])
+            return
+
+        # Parallize the loop since each out index depends only on one value of in
+        for i in prange(len(out)): 
+            out_idx = np.zeros(MAX_DIMS, np.int32)
+            in_idx = np.zeros(MAX_DIMS, np.int32)
+            to_index(i, out_shape, out_idx)
+            broadcast_index(out_idx, out_shape, in_shape, in_idx)
+            in_ord = index_to_position(in_idx, in_strides)
+            out_ord = index_to_position(out_idx, out_strides)
+            out[out_ord] = fn(in_storage[in_ord])
 
     return njit(parallel=True)(_map)  # type: ignore
 
@@ -197,7 +211,24 @@ def tensor_zip(
         b_shape: Shape,
         b_strides: Strides,
     ) -> None:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # Check if stride-alligned (same shape and strides, mean memory is same)
+        if np.array_equal(out_strides, a_strides) and np.array_equal(out_strides, b_strides) and np.array_equal(out_shape, a_shape) and np.array_equal(out_shape, b_shape):
+            for out_ord in prange(len(out)):
+                out[out_ord] = fn(a_storage[out_ord], b_storage[out_ord])
+            return
+
+        # Parallize the loop since each out only needs to read from a specific a and b
+        for i in prange(len(out)):
+            out_idx = np.zeros(MAX_DIMS, np.int32)
+            a_idx = np.zeros(MAX_DIMS, np.int32)
+            b_idx = np.zeros(MAX_DIMS, np.int32)
+            to_index(i, out_shape, out_idx)
+            broadcast_index(out_idx, out_shape, a_shape, a_idx)
+            broadcast_index(out_idx, out_shape, b_shape, b_idx)
+            out_ord = index_to_position(out_idx, out_strides)
+            a_ord = index_to_position(a_idx, a_strides)
+            b_ord = index_to_position(b_idx, b_strides)
+            out[out_ord] = fn(a_storage[a_ord], b_storage[b_ord])
 
     return njit(parallel=True)(_zip)  # type: ignore
 
@@ -230,7 +261,19 @@ def tensor_reduce(
         a_strides: Strides,
         reduce_dim: int,
     ) -> None:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # Parellelize outer loop since each out written to once
+        for i in prange(len(out)):
+            out_idx = np.zeros(MAX_DIMS, np.int32)
+            to_index(i, out_shape, out_idx)
+            out_ord = index_to_position(out_idx, out_strides)
+            curr_val = out[out_ord]
+            # Use normal loop to sum values corresponding to the specific out index that is parallelized
+            for j in range(a_shape[reduce_dim]):
+                a_idx = out_idx
+                a_idx[reduce_dim] = j
+                a_ord = index_to_position(a_idx, a_strides)
+                curr_val = fn(curr_val, a_storage[a_ord])
+            out[out_ord] = curr_val
 
     return njit(parallel=True)(_reduce)  # type: ignore
 
@@ -279,7 +322,18 @@ def _tensor_matrix_multiply(
     a_batch_stride = a_strides[0] if a_shape[0] > 1 else 0
     b_batch_stride = b_strides[0] if b_shape[0] > 1 else 0
 
-    raise NotImplementedError("Need to include this file from past assignment.")
+    # Top 3 loops run in parallel since only need to write once to each and don't depend on others
+    for n in prange(out_shape[0]):  # broadcasted batch dimension
+        for i in prange(out_shape[-2]):     # dim from a
+            for j in prange(out_shape[-1]):     # dim from b
+                val_ij = 0
+                # Run normal loop over shared dim to sum along row/col in a/b
+                for k in range(a_shape[-1]):    # same as b_shape[-2]
+                    a_ord = a_batch_stride * n + a_strides[-2] * i + a_strides[-1] * k
+                    b_ord = b_batch_stride * n + b_strides[-2] * k + b_strides[-1] * j
+                    val_ij += a_storage[a_ord] * b_storage[b_ord]
+                out_ord = out_strides[0] * n + out_strides[-2] * i + out_strides[-1] * j
+                out[out_ord] = val_ij
 
 
 tensor_matrix_multiply = njit(parallel=True, fastmath=True)(_tensor_matrix_multiply)

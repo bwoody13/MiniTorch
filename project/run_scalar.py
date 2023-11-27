@@ -6,11 +6,17 @@ import random
 
 import minitorch
 
+from minitorch import operators
+
+# from minitorch.module import Parameter
+
 
 class Network(minitorch.Module):
     def __init__(self, hidden_layers):
         super().__init__()
-        raise NotImplementedError("Need to include this file from past assignment.")
+        self.layer1 = Linear(2, hidden_layers)
+        self.layer2 = Linear(hidden_layers, hidden_layers)
+        self.layer3 = Linear(hidden_layers, 1)
 
     def forward(self, x):
         middle = [h.relu() for h in self.layer1.forward(x)]
@@ -39,7 +45,18 @@ class Linear(minitorch.Module):
             )
 
     def forward(self, inputs):
-        raise NotImplementedError("Need to include this file from past assignment.")
+        def param_values(params):
+            def param_val(param):
+                return param.value
+            return operators.map(param_val)(params)
+
+        out = param_values(self.bias)
+        for i, input in enumerate(inputs):
+            def apply_weights(x):
+                return input * x
+            xi_weight = operators.map(apply_weights)(param_values(self.weights[i]))
+            out = operators.addLists(xi_weight, out)
+        return out
 
 
 def default_log_fn(epoch, total_loss, correct, losses):
