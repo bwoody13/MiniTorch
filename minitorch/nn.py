@@ -24,7 +24,15 @@ def tile(input: Tensor, kernel: Tuple[int, int]) -> Tuple[Tensor, int, int]:
     assert height % kh == 0
     assert width % kw == 0
     # TODO: Implement for Task 4.3.
-    raise NotImplementedError("Need to implement for Task 4.3")
+    if not input._tensor.is_contiguous():
+        input = input.contiguous()
+
+    new_height = height // kh
+    new_width = width // kw
+    intermediate = input.view(batch, channel, new_height, kh , new_width, kw)
+    reorder = intermediate.permute(0, 1, 2, 4, 3, 5).contiguous()
+    return reorder.view(batch, channel, new_height, new_width, kh * kw), new_height, new_width
+    # raise NotImplementedError("Need to implement for Task 4.3")
 
 
 def avgpool2d(input: Tensor, kernel: Tuple[int, int]) -> Tensor:
@@ -40,7 +48,9 @@ def avgpool2d(input: Tensor, kernel: Tuple[int, int]) -> Tensor:
     """
     batch, channel, height, width = input.shape
     # TODO: Implement for Task 4.3.
-    raise NotImplementedError("Need to implement for Task 4.3")
+    tiled_in, new_h, new_w = tile(input, kernel)
+    return tiled_in.mean(4).view(batch, channel, new_h, new_w)     # 4 is index of last thing in view (kh*kw)
+    # raise NotImplementedError("Need to implement for Task 4.3")
 
 
 max_reduce = FastOps.reduce(operators.max, -1e9)
@@ -68,13 +78,17 @@ class Max(Function):
     def forward(ctx: Context, input: Tensor, dim: Tensor) -> Tensor:
         "Forward of max should be max reduction"
         # TODO: Implement for Task 4.4.
-        raise NotImplementedError("Need to implement for Task 4.4")
+        ctx.save_for_backward(input, dim)
+        return max_reduce(input, dim)
+        # raise NotImplementedError("Need to implement for Task 4.4")
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, float]:
         "Backward of max should be argmax (see above)"
         # TODO: Implement for Task 4.4.
-        raise NotImplementedError("Need to implement for Task 4.4")
+        (input, dim) = ctx.saved_values
+        return grad_output * argmax(input, dim), 0
+        # raise NotImplementedError("Need to implement for Task 4.4")
 
 
 def max(input: Tensor, dim: int) -> Tensor:
