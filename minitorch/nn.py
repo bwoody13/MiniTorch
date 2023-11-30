@@ -78,8 +78,8 @@ class Max(Function):
     def forward(ctx: Context, input: Tensor, dim: Tensor) -> Tensor:
         "Forward of max should be max reduction"
         # TODO: Implement for Task 4.4.
-        ctx.save_for_backward(input, dim)
-        return max_reduce(input, dim)
+        ctx.save_for_backward(input, int(dim[0]))
+        return max_reduce(input, int(dim[0]))
         # raise NotImplementedError("Need to implement for Task 4.4")
 
     @staticmethod
@@ -87,7 +87,7 @@ class Max(Function):
         "Backward of max should be argmax (see above)"
         # TODO: Implement for Task 4.4.
         (input, dim) = ctx.saved_values
-        return grad_output * argmax(input, dim), 0
+        return grad_output * argmax(input, dim), 0.0
         # raise NotImplementedError("Need to implement for Task 4.4")
 
 
@@ -96,7 +96,7 @@ def max(input: Tensor, dim: int) -> Tensor:
 
 
 def softmax(input: Tensor, dim: int) -> Tensor:
-    r"""
+    """
     Compute the softmax as a tensor.
 
 
@@ -111,11 +111,12 @@ def softmax(input: Tensor, dim: int) -> Tensor:
         softmax tensor
     """
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError("Need to implement for Task 4.4")
+    exp_in = input.exp()
+    return exp_in / exp_in.sum(dim)
 
 
 def logsoftmax(input: Tensor, dim: int) -> Tensor:
-    r"""
+    """
     Compute the log of the softmax as a tensor.
 
     $z_i = x_i - \log \sum_i e^{x_i}$
@@ -130,7 +131,13 @@ def logsoftmax(input: Tensor, dim: int) -> Tensor:
          log of softmax tensor
     """
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError("Need to implement for Task 4.4")
+    # ten_max = max_reduce(input.view(input.size), 0)
+    # return input - ((input - ten_max).exp().sum(dim).log() + ten_max)
+    # return input - input.exp().sum(dim).log()
+    # m = max_reduce(input.contiguous().view(input.size), 0)
+    m = max(input, dim)
+    stable_in = input - m
+    return input - stable_in.exp().sum(dim).log() - m
 
 
 def maxpool2d(input: Tensor, kernel: Tuple[int, int]) -> Tensor:
@@ -146,7 +153,9 @@ def maxpool2d(input: Tensor, kernel: Tuple[int, int]) -> Tensor:
     """
     batch, channel, height, width = input.shape
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError("Need to implement for Task 4.4")
+    tiled_in, new_h, new_w = tile(input, kernel)
+    return max(tiled_in, 4).view(batch, channel, new_h, new_w)
+    # raise NotImplementedError("Need to implement for Task 4.4")
 
 
 def dropout(input: Tensor, rate: float, ignore: bool = False) -> Tensor:
@@ -159,7 +168,13 @@ def dropout(input: Tensor, rate: float, ignore: bool = False) -> Tensor:
         ignore : skip dropout, i.e. do nothing at all
 
     Returns:
-        tensor with randoom positions dropped out
+        tensor with random positions dropped out
     """
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError("Need to implement for Task 4.4")
+    if ignore:
+        return input
+
+    rand_tensor = rand(input.shape)
+    keep = rand_tensor > rate
+    return keep * input
+    # raise NotImplementedError("Need to implement for Task 4.4")

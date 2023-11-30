@@ -7,6 +7,7 @@ from minitorch import Tensor
 from .strategies import assert_close
 from .tensor_strategies import tensors
 
+import math
 
 @pytest.mark.task4_3
 @given(tensors(shape=(1, 1, 4, 4)))
@@ -32,7 +33,16 @@ def test_avg(t: Tensor) -> None:
 @given(tensors(shape=(2, 3, 4)))
 def test_max(t: Tensor) -> None:
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError("Need to implement for Task 4.4")
+    for dim in range(len(t.shape)):
+        out = minitorch.max(t, dim)
+        idx = [0, 0, 0]
+        curr = -math.inf
+        for i in range(t.shape[dim]):
+            idx[dim] = i
+            (idx_1, idx_2, idx_3) = tuple(idx)
+            curr = max(curr, t[idx_1, idx_2, idx_3])
+        assert_close(out[0, 0, 0], curr)
+        # minitorch.grad_check(lambda a: minitorch.max(a, dim), t)
 
 
 @pytest.mark.task4_4
