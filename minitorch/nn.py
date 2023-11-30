@@ -176,5 +176,5 @@ def dropout(input: Tensor, rate: float, ignore: bool = False) -> Tensor:
 
     rand_tensor = rand(input.shape)
     keep = rand_tensor > rate
-    return keep * input
+    return input * keep
     # raise NotImplementedError("Need to implement for Task 4.4")
