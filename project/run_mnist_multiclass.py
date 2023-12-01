@@ -2,6 +2,8 @@ from mnist import MNIST
 
 import minitorch
 
+import time
+
 mndata = MNIST("project/data/")
 images, labels = mndata.load_training()
 
@@ -78,7 +80,7 @@ class Network(minitorch.Module):
         x = self.mid(x).relu()
         x = self.out(x).relu()
         x = minitorch.maxpool2d(x, (4, 4))
-        x.view(BATCH, 392)
+        x = x.view(BATCH, 392)
         x = self.lin1(x).relu()
         x = minitorch.dropout(x, 0.25)
         x = self.lin2(x)
@@ -102,6 +104,10 @@ def default_log_fn(epoch, total_loss, correct, total, losses, model):
     print(f"Epoch {epoch} loss {total_loss} valid acc {correct}/{total}")
 
 
+def log_time(epoch, time_per_epoch):
+    print(f"Time per epoch (excludes validation time): {time_per_epoch} secs on Epoch={epoch}")
+
+
 class ImageTrain:
     def __init__(self):
         self.model = Network()
@@ -119,14 +125,16 @@ class ImageTrain:
         n_training_samples = len(X_train)
         optim = minitorch.SGD(self.model.parameters(), learning_rate)
         losses = []
+        acc_time = 0
         for epoch in range(1, max_epochs + 1):
             total_loss = 0.0
 
             model.train()
+
             for batch_num, example_num in enumerate(
                 range(0, n_training_samples, BATCH)
-            ):
-
+            ):  
+                batch_start = time.time()
                 if n_training_samples - example_num <= BATCH:
                     continue
                 y = minitorch.tensor(
@@ -150,8 +158,8 @@ class ImageTrain:
 
                 # Update
                 optim.step()
-
-                if batch_num % 5 == 0:
+                acc_time += time.time() - batch_start
+                if batch_num % 5 == 0 and epoch % 10 == 0:
                     model.eval()
                     # Evaluate on 5 held-out batches
 
@@ -179,8 +187,39 @@ class ImageTrain:
 
                     total_loss = 0.0
                     model.train()
+            if epoch % 10 == 0:
+                log_time(epoch, acc_time / 10)
+                acc_time = 0
+            # if epoch % 10 == 0:
+            #     model.eval()
+            #     # Evaluate on 5 held-out batches
+
+            #     correct = 0
+            #     for val_example_num in range(0, 1 * BATCH, BATCH):
+            #         y = minitorch.tensor(
+            #             y_val[val_example_num : val_example_num + BATCH],
+            #             backend=BACKEND,
+            #         )
+            #         x = minitorch.tensor(
+            #             X_val[val_example_num : val_example_num + BATCH],
+            #             backend=BACKEND,
+            #         )
+            #         out = model.forward(x.view(BATCH, 1, H, W)).view(BATCH, C)
+            #         for i in range(BATCH):
+            #             m = -1000
+            #             ind = -1
+            #             for j in range(C):
+            #                 if out[i, j] > m:
+            #                     ind = j
+            #                     m = out[i, j]
+            #             if y[i, ind] == 1.0:
+            #                 correct += 1
+            #     log_fn(epoch, total_loss, correct, BATCH, losses, model)
+            #
+            #     total_loss = 0.0
+            #     model.train()
 
 
 if __name__ == "__main__":
     data_train, data_val = (make_mnist(0, 5000), make_mnist(10000, 10500))
-    ImageTrain().train(data_train, data_val, learning_rate=0.01)
+    ImageTrain().train(data_train, data_val, learning_rate=0.01, max_epochs=250)

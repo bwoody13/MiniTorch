@@ -1,3 +1,4 @@
+import os
 import random
 import time
 
@@ -154,6 +155,7 @@ class SentenceSentimentTrain:
         validation_accuracy = []
         acc_time = 0
         for epoch in range(1, max_epochs + 1):
+            print(f"Starting Epoch {epoch}")
             total_loss = 0.0
 
             model.train()
@@ -281,6 +283,9 @@ if __name__ == "__main__":
     validation_size = 100
     learning_rate = 0.01
     max_epochs = 250
+
+    if 'HOME' not in os.environ:
+        os.environ['HOME'] = 'C:\\Users\\User'
 
     (X_train, y_train), (X_val, y_val) = encode_sentiment_data(
         load_dataset("glue", "sst2"),
