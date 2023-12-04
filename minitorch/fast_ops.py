@@ -166,7 +166,7 @@ def tensor_map(
             return
 
         # Parallize the loop since each out index depends only on one value of in
-        for i in prange(len(out)): 
+        for i in prange(len(out)):
             out_idx = np.zeros(MAX_DIMS, np.int32)
             in_idx = np.zeros(MAX_DIMS, np.int32)
             to_index(i, out_shape, out_idx)

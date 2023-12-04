@@ -133,7 +133,7 @@ class ImageTrain:
 
             for batch_num, example_num in enumerate(
                 range(0, n_training_samples, BATCH)
-            ):  
+            ):
                 batch_start = time.time()
                 if n_training_samples - example_num <= BATCH:
                     continue

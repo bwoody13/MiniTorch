@@ -4,7 +4,7 @@ from . import operators
 from .autodiff import Context
 from .fast_ops import FastOps
 from .tensor import Tensor
-from .tensor_functions import Function, rand, tensor
+from .tensor_functions import Function, rand   # , tensor
 
 
 def tile(input: Tensor, kernel: Tuple[int, int]) -> Tuple[Tensor, int, int]:
@@ -98,9 +98,7 @@ def softmax(input: Tensor, dim: int) -> Tensor:
     """
     Compute the softmax as a tensor.
 
-
-
-    $z_i = \frac{e^{x_i}}{\sum_i e^{x_i}}$
+    $z_i = \frac{e^{x_i}}{\\sum_i e^{x_i}}$
 
     Args:
         input : input tensor
@@ -118,7 +116,7 @@ def logsoftmax(input: Tensor, dim: int) -> Tensor:
     """
     Compute the log of the softmax as a tensor.
 
-    $z_i = x_i - \log \sum_i e^{x_i}$
+    $z_i = x_i - \\log \\sum_i e^{x_i}$
 
     See https://en.wikipedia.org/wiki/LogSumExp#log-sum-exp_trick_for_log-domain_calculations
 

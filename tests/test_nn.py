@@ -9,6 +9,7 @@ from .tensor_strategies import tensors
 
 import math
 
+
 @pytest.mark.task4_3
 @given(tensors(shape=(1, 1, 4, 4)))
 def test_avg(t: Tensor) -> None:

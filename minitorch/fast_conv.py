@@ -7,7 +7,6 @@ from .autodiff import Context
 from .tensor import Tensor
 from .tensor_data import (
     MAX_DIMS,
-    Index,
     Shape,
     Strides,
     Storage,
@@ -232,7 +231,7 @@ def _tensor_conv2d(
         out_idx = np.zeros(MAX_DIMS, np.int32)
         to_index(i, out_shape, out_idx)
 
-        acc = 0
+        acc = 0.0
         # Loop over input channels
         for in_channel in range(in_channels):
             start_h = out_idx[2]
@@ -240,7 +239,7 @@ def _tensor_conv2d(
             if reverse:
                 start_h -= (kh - 1)
                 start_w -= (kw - 1)
-            
+
             for h in range(kh):
                 in_h = start_h + h
                 if 0 <= in_h < height:
@@ -250,7 +249,7 @@ def _tensor_conv2d(
                             in_ord = out_idx[0] * s10 + in_channel * s11 + in_h * s12 + in_w * s13
                             w_ord = out_idx[1] * s20 + in_channel * s21 + h * s22 + w * s23
                             acc += input[in_ord] * weight[w_ord]
-        
+
         out_ord = index_to_position(out_idx, out_strides)
         out[out_ord] = acc
 
