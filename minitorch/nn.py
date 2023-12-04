@@ -78,17 +78,16 @@ class Max(Function):
     def forward(ctx: Context, input: Tensor, dim: Tensor) -> Tensor:
         "Forward of max should be max reduction"
         # TODO: Implement for Task 4.4.
-        ctx.save_for_backward(input, int(dim[0]))
-        return max_reduce(input, int(dim[0]))
-        # raise NotImplementedError("Need to implement for Task 4.4")
+        ret = max_reduce(input, int(dim.item()))
+        ctx.save_for_backward(input, ret)
+        return ret
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, float]:
         "Backward of max should be argmax (see above)"
         # TODO: Implement for Task 4.4.
-        (input, dim) = ctx.saved_values
-        return grad_output * argmax(input, dim), 0.0
-        # raise NotImplementedError("Need to implement for Task 4.4")
+        (input, ret) = ctx.saved_values
+        return (input == ret) * grad_output, 0.0
 
 
 def max(input: Tensor, dim: int) -> Tensor:

@@ -87,11 +87,10 @@ class CNNSentimentKim(minitorch.Module):
         # (batch, _, emb) = x.shape
         # x = x.view(batch, emb)
         # x = minitorch.maxpool2d(x, (2, 2))
-        x = self.linear(x)
         if self.training:
             x = minitorch.dropout(x, self.dropout)
+        x = self.linear(x)
         return x.sigmoid().view(embeddings.shape[0])
-        # raise NotImplementedError("Need to implement for Task 4.5")
 
 
 # Evaluation helper methods

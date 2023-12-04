@@ -42,7 +42,9 @@ def test_max(t: Tensor) -> None:
             (idx_1, idx_2, idx_3) = tuple(idx)
             curr = max(curr, t[idx_1, idx_2, idx_3])
         assert_close(out[0, 0, 0], curr)
-        # minitorch.grad_check(lambda a: minitorch.max(a, dim), t)
+        rand_tensor = minitorch.rand(t.shape)
+        new_t = t + (rand_tensor * 1e-5)
+        minitorch.grad_check(lambda a: minitorch.max(a, dim), new_t)
 
 
 @pytest.mark.task4_4
