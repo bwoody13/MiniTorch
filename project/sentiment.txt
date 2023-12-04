@@ -1,0 +1,349 @@
+Starting Epoch 1
+Starting Epoch 2
+Starting Epoch 3
+Starting Epoch 4
+Starting Epoch 5
+Starting Epoch 6
+Starting Epoch 7
+Starting Epoch 8
+Starting Epoch 9
+Starting Epoch 10
+Epoch 10, loss 14.197194830517104, train accuracy: 81.33%
+Validation accuracy: 82.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 23.10474772453308 secs on Epoch=10
+Starting Epoch 11
+Starting Epoch 12
+Starting Epoch 13
+Starting Epoch 14
+Starting Epoch 15
+Starting Epoch 16
+Starting Epoch 17
+Starting Epoch 18
+Starting Epoch 19
+Starting Epoch 20
+Epoch 20, loss 7.106293473936192, train accuracy: 89.56%
+Validation accuracy: 71.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 20.728518557548522 secs on Epoch=20
+Starting Epoch 21
+Starting Epoch 22
+Starting Epoch 23
+Starting Epoch 24
+Starting Epoch 25
+Starting Epoch 26
+Starting Epoch 27
+Starting Epoch 28
+Starting Epoch 29
+Starting Epoch 30
+Epoch 30, loss 7.9432724168165345, train accuracy: 88.44%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 18.675434470176697 secs on Epoch=30
+Starting Epoch 31
+Starting Epoch 32
+Starting Epoch 33
+Starting Epoch 34
+Starting Epoch 35
+Starting Epoch 36
+Starting Epoch 37
+Starting Epoch 38
+Starting Epoch 39
+Starting Epoch 40
+Epoch 40, loss 9.706464300752245, train accuracy: 84.22%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 18.64654860496521 secs on Epoch=40
+Starting Epoch 41
+Starting Epoch 42
+Starting Epoch 43
+Starting Epoch 44
+Starting Epoch 45
+Starting Epoch 46
+Starting Epoch 47
+Starting Epoch 48
+Starting Epoch 49
+Starting Epoch 50
+Epoch 50, loss 7.664103798574451, train accuracy: 89.11%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 22.642924118041993 secs on Epoch=50
+Starting Epoch 51
+Starting Epoch 52
+Starting Epoch 53
+Starting Epoch 54
+Starting Epoch 55
+Starting Epoch 56
+Starting Epoch 57
+Starting Epoch 58
+Starting Epoch 59
+Starting Epoch 60
+Epoch 60, loss 6.88357927452951, train accuracy: 88.67%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 20.503788805007936 secs on Epoch=60
+Starting Epoch 61
+Starting Epoch 62
+Starting Epoch 63
+Starting Epoch 64
+Starting Epoch 65
+Starting Epoch 66
+Starting Epoch 67
+Starting Epoch 68
+Starting Epoch 69
+Starting Epoch 70
+Epoch 70, loss 7.479910202133055, train accuracy: 86.44%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 19.833621406555174 secs on Epoch=70
+Starting Epoch 71
+Starting Epoch 72
+Starting Epoch 73
+Starting Epoch 74
+Starting Epoch 75
+Starting Epoch 76
+Starting Epoch 77
+Starting Epoch 78
+Starting Epoch 79
+Starting Epoch 80
+Epoch 80, loss 9.239272230298225, train accuracy: 84.89%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 21.170765233039855 secs on Epoch=80
+Starting Epoch 81
+Starting Epoch 82
+Starting Epoch 83
+Starting Epoch 84
+Starting Epoch 85
+Starting Epoch 86
+Starting Epoch 87
+Starting Epoch 88
+Starting Epoch 89
+Starting Epoch 90
+Epoch 90, loss 8.19663707599697, train accuracy: 85.56%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 19.6225643157959 secs on Epoch=90
+Starting Epoch 91
+Starting Epoch 92
+Starting Epoch 93
+Starting Epoch 94
+Starting Epoch 95
+Starting Epoch 96
+Starting Epoch 97
+Starting Epoch 98
+Starting Epoch 99
+Starting Epoch 100
+Epoch 100, loss 8.28446455807895, train accuracy: 85.56%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 229.18684861660003 secs on Epoch=100
+Starting Epoch 101
+Starting Epoch 102
+Starting Epoch 103
+Starting Epoch 104
+Starting Epoch 105
+Starting Epoch 106
+Starting Epoch 107
+Starting Epoch 108
+Starting Epoch 109
+Starting Epoch 110
+Epoch 110, loss 7.221966842756425, train accuracy: 88.00%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 23.375904154777526 secs on Epoch=110
+Starting Epoch 111
+Starting Epoch 112
+Starting Epoch 113
+Starting Epoch 114
+Starting Epoch 115
+Starting Epoch 116
+Starting Epoch 117
+Starting Epoch 118
+Starting Epoch 119
+Starting Epoch 120
+Epoch 120, loss 7.032184273351492, train accuracy: 88.22%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 19.746955013275148 secs on Epoch=120
+Starting Epoch 121
+Starting Epoch 122
+Starting Epoch 123
+Starting Epoch 124
+Starting Epoch 125
+Starting Epoch 126
+Starting Epoch 127
+Starting Epoch 128
+Starting Epoch 129
+Starting Epoch 130
+Epoch 130, loss 7.848545100176294, train accuracy: 88.89%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 18.899488234519957 secs on Epoch=130
+Starting Epoch 131
+Starting Epoch 132
+Starting Epoch 133
+Starting Epoch 134
+Starting Epoch 135
+Starting Epoch 136
+Starting Epoch 137
+Starting Epoch 138
+Starting Epoch 139
+Starting Epoch 140
+Epoch 140, loss 6.819602334051284, train accuracy: 90.00%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 18.885531735420226 secs on Epoch=140
+Starting Epoch 141
+Starting Epoch 142
+Starting Epoch 143
+Starting Epoch 144
+Starting Epoch 145
+Starting Epoch 146
+Starting Epoch 147
+Starting Epoch 148
+Starting Epoch 149
+Starting Epoch 150
+Epoch 150, loss 8.006497380861996, train accuracy: 86.89%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 22.811616802215575 secs on Epoch=150
+Starting Epoch 151
+Starting Epoch 152
+Starting Epoch 153
+Starting Epoch 154
+Starting Epoch 155
+Starting Epoch 156
+Starting Epoch 157
+Starting Epoch 158
+Starting Epoch 159
+Starting Epoch 160
+Epoch 160, loss 8.200748118153463, train accuracy: 84.67%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 23.4184387922287 secs on Epoch=160
+Starting Epoch 161
+Starting Epoch 162
+Starting Epoch 163
+Starting Epoch 164
+Starting Epoch 165
+Starting Epoch 166
+Starting Epoch 167
+Starting Epoch 168
+Starting Epoch 169
+Starting Epoch 170
+Epoch 170, loss 8.062184235634774, train accuracy: 86.89%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 22.602903747558592 secs on Epoch=170
+Starting Epoch 171
+Starting Epoch 172
+Starting Epoch 173
+Starting Epoch 174
+Starting Epoch 175
+Starting Epoch 176
+Starting Epoch 177
+Starting Epoch 178
+Starting Epoch 179
+Starting Epoch 180
+Epoch 180, loss 7.714711014076552, train accuracy: 87.56%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 21.64694185256958 secs on Epoch=180
+Starting Epoch 181
+Starting Epoch 182
+Starting Epoch 183
+Starting Epoch 184
+Starting Epoch 185
+Starting Epoch 186
+Starting Epoch 187
+Starting Epoch 188
+Starting Epoch 189
+Starting Epoch 190
+Epoch 190, loss 7.430391755624843, train accuracy: 87.56%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 20.835604190826416 secs on Epoch=190
+Starting Epoch 191
+Starting Epoch 192
+Starting Epoch 193
+Starting Epoch 194
+Starting Epoch 195
+Starting Epoch 196
+Starting Epoch 197
+Starting Epoch 198
+Starting Epoch 199
+Starting Epoch 200
+Epoch 200, loss 7.100009403658241, train accuracy: 89.33%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 19.17389190196991 secs on Epoch=200
+Starting Epoch 201
+Starting Epoch 202
+Starting Epoch 203
+Starting Epoch 204
+Starting Epoch 205
+Starting Epoch 206
+Starting Epoch 207
+Starting Epoch 208
+Starting Epoch 209
+Starting Epoch 210
+Epoch 210, loss 7.4329541839140285, train accuracy: 87.56%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 18.81561236381531 secs on Epoch=210
+Starting Epoch 211
+Starting Epoch 212
+Starting Epoch 213
+Starting Epoch 214
+Starting Epoch 215
+Starting Epoch 216
+Starting Epoch 217
+Starting Epoch 218
+Starting Epoch 219
+Starting Epoch 220
+Epoch 220, loss 7.570910967774195, train accuracy: 86.67%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 21.833619117736816 secs on Epoch=220
+Starting Epoch 221
+Starting Epoch 222
+Starting Epoch 223
+Starting Epoch 224
+Starting Epoch 225
+Starting Epoch 226
+Starting Epoch 227
+Starting Epoch 228
+Starting Epoch 229
+Starting Epoch 230
+Epoch 230, loss 8.262942485330402, train accuracy: 87.11%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 19.483279395103455 secs on Epoch=230
+Starting Epoch 231
+Starting Epoch 232
+Starting Epoch 233
+Starting Epoch 234
+Starting Epoch 235
+Starting Epoch 236
+Starting Epoch 237
+Starting Epoch 238
+Starting Epoch 239
+Starting Epoch 240
+Epoch 240, loss 7.484397760434691, train accuracy: 89.33%
+Validation accuracy: 69.00%
+Best Valid accuracy: 82.00%
+Time per epoch (excludes validation time): 20.135996079444887 secs on Epoch=240
+Starting Epoch 241
+Starting Epoch 242
+Starting Epoch 243
+Starting Epoch 244
+Starting Epoch 245
+Starting Epoch 246
+Starting Epoch 247
+Starting Epoch 248
+Starting Epoch 249
+Starting Epoch 250
+Epoch 250, loss 8.064469140809981, train accuracy: 86.00%
+Validation accuracy: 70.00%
+Best Valid accuracy: 82.00%

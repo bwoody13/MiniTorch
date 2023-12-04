@@ -23,7 +23,8 @@ class Linear(minitorch.Module):
         self.out_size = out_size
 
     def forward(self, x):
-        batch, in_size = x.shape
+        batch = x.shape[0]
+        in_size = x.shape[1]
         return (
             x.view(batch, in_size) @ self.weights.value.view(in_size, self.out_size)
         ).view(batch, self.out_size) + self.bias.value
@@ -77,12 +78,19 @@ class CNNSentimentKim(minitorch.Module):
         embeddings tensor: [batch x sentence length x embedding dim]
         """
         # TODO: Implement for Task 4.5.
-        x = self.conv1(embeddings).relu() + self.conv2(embeddings).relu() + self.conv3(embeddings).relu()
-        x = max(x, 1)
+        embeddings = embeddings.permute(0, 2, 1)
+        x1 = minitorch.max(self.conv1(embeddings).relu(), 2)
+        x2 = minitorch.max(self.conv2(embeddings).relu(), 2)
+        x3 = minitorch.max(self.conv3(embeddings).relu(), 2)
+        x = x1 + x2 + x3
+        # x = minitorch.max(x, 2)
+        # (batch, _, emb) = x.shape
+        # x = x.view(batch, emb)
         # x = minitorch.maxpool2d(x, (2, 2))
-        x = self.linear(x).relu()
-        x = minitorch.dropout(x, self.dropout)
-        return x.sigmoid()
+        x = self.linear(x)
+        if self.training:
+            x = minitorch.dropout(x, self.dropout)
+        return x.sigmoid().view(embeddings.shape[0])
         # raise NotImplementedError("Need to implement for Task 4.5")
 
 
@@ -155,7 +163,7 @@ class SentenceSentimentTrain:
         validation_accuracy = []
         acc_time = 0
         for epoch in range(1, max_epochs + 1):
-            print(f"Starting Epoch {epoch}")
+            # print(f"Starting Epoch {epoch}")
             total_loss = 0.0
 
             model.train()
@@ -164,7 +172,7 @@ class SentenceSentimentTrain:
             for batch_num, example_num in enumerate(
                 range(0, n_training_samples, batch_size)
             ):
-                batch_start = 0
+                batch_start = time.time()
                 y = minitorch.tensor(
                     y_train[example_num : example_num + batch_size], backend=BACKEND
                 )
@@ -185,7 +193,7 @@ class SentenceSentimentTrain:
 
                 # Update
                 optim.step()
-            acc_time += time.time() - batch_start
+                acc_time += time.time() - batch_start
             # Evaluate on validation set at the end of the epoch
             if epoch % 10 == 0:
                 validation_predictions = []
@@ -281,7 +289,8 @@ def encode_sentiment_data(dataset, pretrained_embeddings, N_train, N_val=0):
 if __name__ == "__main__":
     train_size = 450
     validation_size = 100
-    learning_rate = 0.01
+    learning_rate = 0.1
+
     max_epochs = 250
 
     if 'HOME' not in os.environ:
